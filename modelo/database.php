@@ -9,7 +9,7 @@ class Database{
 	// MÉTODOS MÁGICOS
 	// Constructor de la clase
 	function __construct(){
-		//$this->conectar();
+		$this->conectar();
 	}
 	// Método __get
 	public function __get($propiedad){

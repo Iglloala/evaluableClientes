@@ -75,12 +75,30 @@ class Vista{
 		print $html;
 	}
 
-	public function mostrarContenidoListado(array $colaMensajes = []){
+	public function mostrarContenidoListado(array $colaMensajes = [], array $listadoClientes){
 		$base = $this->cargarMensajes($colaMensajes);
 		$template = file_get_contents('vista/listado.tpl');
 		$html = str_replace("{CONTENT}", $template, $base);
 		// Si tuviese contenido dinámico aquí iría reemplazando más {ETIQUETAS} por su contenido.
 		// --
+		// Ahora itero sobre los distintos clientes y voy generando sus filas para insertar en la tabla
+		$tbody = "<tbody>";
+		foreach ($listadoClientes as $numero => $cliente) {
+			// preparo los campos
+			$dniCliente = $cliente->dniCliente;
+			$nombre = $cliente->nombre;
+			// genero la fila
+			$filaHtml = "<tr>";
+			$filaHtml .= "  <th scope='row'>$numero</th>";
+			$filaHtml .= "  <td>$dniCliente</td>";
+			$filaHtml .= "  <td>$nombre</td>";
+			$filaHtml .= "</tr>";
+			// la inserto al tbody
+			$tbody .= $filaHtml;
+		}
+		$tbody .= "</tbody>";
+		// Reemplazo el token {FILAS} del template por el tbody ya completo
+		$html = str_replace("{FILAS}", $tbody, $html);
 		// Y muestro el contenido ya completo
 		print $html;
 	}

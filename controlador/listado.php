@@ -1,5 +1,7 @@
-<?php 
-$this->vista->mostrarContenidoListado($this->colaMensajes);
+<?php
+// Obtengo un listado de todos los clientes
+$listadoClientes = Cliente::obtenerClientes($this->database);
+$this->vista->mostrarContenidoListado($this->colaMensajes, $listadoClientes);
 
 
 // DEBUG: tests modelo

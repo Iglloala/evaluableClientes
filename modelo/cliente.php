@@ -32,7 +32,7 @@ class Cliente{
 		$resultado = $database->conexion->query($sql);
 		$arrayClientes=[];
 		while ($fila = mysqli_fetch_assoc($resultado)){
-			$cliente = new Cliente($fila['dniCliente'], $fila['pwd'], $fila['nombre'], $fila['direccion'], $fila['email']);
+			$cliente = new Cliente($fila['dniCliente'], $fila['nombre'], $fila['direccion'], $fila['email'], $fila['pwd']);
 			array_push($arrayClientes, $cliente);
 		}
 		return $arrayClientes;
@@ -62,7 +62,7 @@ class Cliente{
 			$resultado = $database->conexion->query($sql);
 			if ($resultado) {
 				while ($fila = mysqli_fetch_assoc($resultado)){
-					$cliente = new Cliente($fila['dniCliente'], $fila['pwd'], $fila['nombre'], $fila['direccion'], $fila['email']);
+					$cliente = new Cliente($fila['dniCliente'], $fila['nombre'], $fila['direccion'], $fila['email'], $fila['pwd']);
 				}
 				return $cliente;
 			}

@@ -1,5 +1,5 @@
 <?php 
-	require_once('controlador/controlador.php');
+	require_once('controlador/main.php');
 	$miControlador = new Controlador();
 ?>
 <!DOCTYPE html>

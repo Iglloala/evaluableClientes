@@ -21,11 +21,12 @@ class Database{
 	}
 
 	// Método para conectar
-	public function conectar(){
+	private function conectar(){
 		$this->conexion = new mysqli($this->db_host, $this->db_user, $this->db_passwd, $this->db_name);
 		if ($this->conexion->connect_errno) {
 			echo "Fallo al conectar a MYSQL: " . $conexion->connect_error;
 		}
+		return $this->conexion;
 	}
 	// Método desconectar
 	public function desconectar(){

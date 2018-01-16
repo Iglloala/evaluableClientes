@@ -19,6 +19,7 @@ class Vista{
 		print $template;
 	}
 	
+	// Defino un método que mostrará el footer modificando el template footer.tpl y añadiéndole el breadcrumb generado según la página que se vaya a visualizar en ese momento
 	public function cargarFooter(string $pagina){
 		$template = file_get_contents('vista/footer.tpl');
 		// Construyo el breadcrumb
@@ -27,6 +28,61 @@ class Vista{
 		$template = str_replace("{BREADCRUMB}", $html, $template);
 		// Y muestro el footer ya completo
 		print $template;
+	}
+
+	// Defino una función utilitaria para cargar los mensajes en el template base.tpl en caso de haberlos
+	private function cargarMensajes(array $colaMensajes){
+		$template = file_get_contents('vista/base.tpl');
+		$html ='';
+		if (count($colaMensajes>0)){
+			$html .= "<div class='wrapper-mensajes row'>";
+			$html .= "  <div class='col-12'>";
+			foreach ($colaMensajes as $mensaje) {
+				// Por cada mensaje genero el código html para mostrarlo según el tipo que sea (success, danger o info)
+				if ($mensaje['tipo'] == 'success'){
+					$html .= "<div class='alert alert-success alert-dismissible fade show' role='alert'>";
+					$html .= $mensaje['texto'];
+				}
+				elseif ($mensaje['tipo'] == 'danger'){
+					$html .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>";
+					$html .= $mensaje['texto'];
+				}
+				else {
+					$html .= "<div class='alert alert-info alert-dismissible fade show' role='alert'>";
+					$html .= $mensaje['texto'];
+				}
+				// E inserto también los botones de cierre, y termino de cerrar etiquetas
+				$html .= '  <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">';
+				$html .= '    <span aria-hidden="true">&times;</span>';
+				$html .= '  </button>';
+				$html .= '</div>';
+			}
+			$html .= "  </div>";
+			$html .= "</div>";
+		}
+		$template = str_replace("{MESSAGES}", $html, $template);
+		return $template;
+	}
+
+	// Defino un método para cargar el contenido de la portada. Además si recibe una lista de mensajes de alerta y/o información tendrá que mostrarlos justo antes del contenido.
+	public function mostrarContenidoPortada(array $colaMensajes = []){
+		$base = $this->cargarMensajes($colaMensajes);
+		$template = file_get_contents('vista/portada.tpl');
+		$html = str_replace("{CONTENT}", $template, $base);
+		// Si tuviese contenido dinámico aquí iría reemplazando más {ETIQUETAS} por su contenido.
+		// --
+		// Y muestro el contenido ya completo
+		print $html;
+	}
+
+	public function mostrarContenidoListado(array $colaMensajes = []){
+		$base = $this->cargarMensajes($colaMensajes);
+		$template = file_get_contents('vista/listado.tpl');
+		$html = str_replace("{CONTENT}", $template, $base);
+		// Si tuviese contenido dinámico aquí iría reemplazando más {ETIQUETAS} por su contenido.
+		// --
+		// Y muestro el contenido ya completo
+		print $html;
 	}
 }
 

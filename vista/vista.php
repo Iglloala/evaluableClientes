@@ -79,8 +79,6 @@ class Vista{
 		$base = $this->cargarMensajes($colaMensajes);
 		$template = file_get_contents('vista/listado.tpl');
 		$html = str_replace("{CONTENT}", $template, $base);
-		// Si tuviese contenido dinámico aquí iría reemplazando más {ETIQUETAS} por su contenido.
-		// --
 		// Ahora itero sobre los distintos clientes y voy generando sus filas para insertar en la tabla
 		$tbody = "<tbody>";
 		foreach ($listadoClientes as $numero => $cliente) {
@@ -99,6 +97,62 @@ class Vista{
 		$tbody .= "</tbody>";
 		// Reemplazo el token {FILAS} del template por el tbody ya completo
 		$html = str_replace("{FILAS}", $tbody, $html);
+		// Y muestro el contenido ya completo
+		print $html;
+	}
+
+	// Defino una función a la que se le pasa tipoFormulario y dependiendo de si es para dar de alta o para actualizar devuelve un formulario apropiado. Si es para actualizar tiene que recibir por parámetro un array con las propiedades del cliente en cuestión.
+	public function generaFormularioCliente(string $tipoFormulario, array $datosCliente = []){
+		// Preparo los campos
+		$dniCliente = $datosCliente['dniCliente'];
+		$nombre = $datosCliente['nombre'];
+		$direccion = $datosCliente['direccion'];
+		$email = $datosCliente['email'];
+		$pwd = $datosCliente['pwd'];
+		// Empiezo a componer el formulario
+		$html = "<form method='post' action=''>";
+		// - dni
+		$html .= "  <div class='form-group'>";
+		$html .= "    <label for='dniCliente'>DNI</label>";
+		if ($tipoFormulario=="alta"){
+			$html .= "    <input type='text' class='form-control' name='dniCliente' placeholder='DNI'>";
+		}
+		else {
+			$html .= "    <input type='text' class='form-control' name='dniCliente' placeholder='DNI' value='$dniCliente' disabled>";
+		}
+		$html .= "  </div>";
+		// - nombre
+		$html .= "  <div class='form-group'>";
+		$html .= "    <label for='nombre'>Nombre</label>";
+		$html .= "    <input type='text' class='form-control' name='nombre' placeholder='Nombre' value='$nombre'>";
+		$html .= "  </div>";
+		// - direccion
+		$html .= "  <div class='form-group'>";
+		$html .= "    <label for='direccion'>Dirección</label>";
+		$html .= "    <input type='text' class='form-control' name='direccion' placeholder='Dirección' value='$direccion'>";
+		$html .= "  </div>";
+		$html .= "</form>";
+		// - email
+		$html .= "  <div class='form-group'>";
+		$html .= "    <label for='email'>Correo electrónico</label>";
+		$html .= "    <input type='text' class='form-control' name='email' placeholder='Correo electrónico' value='$email'>";
+		$html .= "  </div>";
+		// - pwd
+		$html .= "  <div class='form-group'>";
+		$html .= "    <label for='pwd'>Password</label>";
+		$html .= "    <input type='password' class='form-control' name='pwd' placeholder='Password' value='$pwd'>";
+		// - submit
+		$html .= "      <button id='btSubmit' class='btn btn-primary' type='submit' name='btSubmit'>Registrar cliente</button>";
+		return $html;
+	}
+
+	public function mostrarContenidoAlta(array $colaMensajes=[]){
+		$base = $this->cargarMensajes($colaMensajes);
+		$template = file_get_contents('vista/alta.tpl');
+		$html = str_replace("{CONTENT}", $template, $base);
+		// Ahora llamo a la función que genera el formulario e inserto su respuesta html en lugar del token {FORMULARIO} del template
+		$formulario = $this->generaFormularioCliente("alta");
+		$html = str_replace("{FORMULARIO}", $formulario, $html);
 		// Y muestro el contenido ya completo
 		print $html;
 	}

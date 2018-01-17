@@ -48,7 +48,7 @@ class Controlador{
 				require_once('controlador/listado.php');
 				break;
 			case 'alta':
-				//$pagina = 'alta';
+				require_once('controlador/alta.php');
 				break;
 			case 'baja':
 				//$pagina = 'baja';

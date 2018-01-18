@@ -201,6 +201,25 @@ class Vista{
 		// Y muestro el contenido ya completo
 		print $html;
 	}
+
+	// Defino una función para mostrar el contenido de la pantalla de modificación. Si se le pasa el argumento tipo='seleccion' entonces carga el formulario para seleccionar un dni. Y si se le pasa el argumento tipo='modificacion' pues ya carga el formulario de generaFormularioCliente. (Al que hay que pasarle un array con los datos del cliente para que lo rellene)
+	public function mostrarContenidoModificar($colaMensajes, $tipo='seleccion', $datosCliente=[]) {
+		if ($tipo == "seleccion"){
+			// Genero el formulario para seleccionar un DNI
+			$formulario = $this->generaFormularioSeleccionDNI();
+		}
+		elseif ($tipo == "modificacion") {
+			// Genero el formulario para modificar un cliente
+			$formulario = $this->generaFormularioCliente("modificar", $datosCliente);
+		}
+		// Y cargo el template junto con el formulario apropiado
+		$base = $this->cargarMensajes($colaMensajes);
+		$template = file_get_contents('vista/modificar.tpl');
+		$html = str_replace("{CONTENT}", $template, $base);
+		$html = str_replace("{FORMULARIO}", $formulario, $html);
+		// Y muestro el contenido ya completo
+		print $html;
+	}
 }
 
 ?>

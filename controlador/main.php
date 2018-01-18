@@ -62,7 +62,7 @@ class Controlador{
 				require_once('controlador/baja.php');
 				break;
 			case 'modificar':
-				//$pagina = 'modificar';
+				require_once('controlador/modificar.php');
 				break;
 			default:
 				//$pagina = 'portada';

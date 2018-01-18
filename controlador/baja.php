@@ -1,6 +1,7 @@
 <?php 
 	// Si  NO se ha enviado un dni para eliminar entonces muestra el formulario para solicitar un DNI
 	if (!isset($_POST['btSeleccionarCliente'])){
+		array_push($this->colaMensajes, ['tipo'=>'info', 'texto'=>"Introduce el DNI del cliente que quieras eliminar"]);
 		$this->vista->mostrarContenidoBaja($this->colaMensajes, "seleccion");
 	}
 	// Ahora bien si ya se ha enviado un DNI pues comprobamos que exista

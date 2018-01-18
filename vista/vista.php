@@ -4,7 +4,7 @@ class Vista{
 	// Métodos de la vista
 	
 	// Defino un método que mostrará el header modificando el template header.tpl y añadiéndole los enlaces que se le pasen por parámetro. En su defecto insertará un sólo enlace 'Portada' como parámetro por defecto. El parámetro 'activo' representa el item del array que aparecerá resaltado.
-	public function cargarHeader(array $enlaces=['Portada'], int $activo=0){
+	public function cargarHeader($enlaces=['Portada'], $activo=0){
 		$template = file_get_contents('vista/header.tpl');
 		// Inserto los enlaces
 		$html = "";
@@ -65,7 +65,7 @@ class Vista{
 	}
 
 	// Defino un método para cargar el contenido de la portada. Además si recibe una lista de mensajes de alerta y/o información tendrá que mostrarlos justo antes del contenido.
-	public function mostrarContenidoPortada(array $colaMensajes = []){
+	public function mostrarContenidoPortada($colaMensajes=[]){
 		$base = $this->cargarMensajes($colaMensajes);
 		$template = file_get_contents('vista/portada.tpl');
 		$html = str_replace("{CONTENT}", $template, $base);
@@ -75,7 +75,7 @@ class Vista{
 		print $html;
 	}
 
-	public function mostrarContenidoListado(array $colaMensajes = [], array $listadoClientes){
+	public function mostrarContenidoListado($colaMensajes=[], array $listadoClientes){
 		$base = $this->cargarMensajes($colaMensajes);
 		$template = file_get_contents('vista/listado.tpl');
 		$html = str_replace("{CONTENT}", $template, $base);
@@ -102,7 +102,7 @@ class Vista{
 	}
 
 	// Defino una función a la que se le pasa tipoFormulario y dependiendo de si es para dar de alta o para actualizar devuelve un formulario apropiado. Si es para actualizar tiene que recibir por parámetro un array con las propiedades del cliente en cuestión.
-	public function generaFormularioCliente(string $tipoFormulario, array $datosCliente = []){
+	public function generaFormularioCliente(string $tipoFormulario, $datosCliente=[]){
 		// Preparo los campos
 		$dniCliente = $datosCliente['dniCliente'];
 		$nombre = $datosCliente['nombre'];
@@ -131,7 +131,6 @@ class Vista{
 		$html .= "    <label for='direccion'>Dirección</label>";
 		$html .= "    <input type='text' class='form-control' name='direccion' placeholder='Dirección' value='$direccion'>";
 		$html .= "  </div>";
-		$html .= "</form>";
 		// - email
 		$html .= "  <div class='form-group'>";
 		$html .= "    <label for='email'>Correo electrónico</label>";
@@ -142,11 +141,13 @@ class Vista{
 		$html .= "    <label for='pwd'>Password</label>";
 		$html .= "    <input type='password' class='form-control' name='pwd' placeholder='Password' value='$pwd'>";
 		// - submit
-		$html .= "      <button id='btSubmit' class='btn btn-primary' type='submit' name='btSubmit'>Registrar cliente</button>";
+		$html .= "      <button id='btRegistrarCliente' class='btn btn-primary btSubmit' type='submit' name='btRegistrarCliente' value='btRegistrarCliente'>Registrar cliente</button>";
+		// eof: form
+		$html .= "</form>";
 		return $html;
 	}
 
-	public function mostrarContenidoAlta(array $colaMensajes=[]){
+	public function mostrarContenidoAlta($colaMensajes=[]){
 		$base = $this->cargarMensajes($colaMensajes);
 		$template = file_get_contents('vista/alta.tpl');
 		$html = str_replace("{CONTENT}", $template, $base);

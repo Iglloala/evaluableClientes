@@ -9,7 +9,7 @@ class Cliente{
 	private $password;
 
 	// Constructor
-	function __construct(string $dniCliente, string $nombre="", string $direccion="", string $email="", string $pwd=""){
+	function __construct($dniCliente, $nombre="", $direccion="", $email="", $pwd=""){
 		$this->dniCliente = $dniCliente;
 		$this->pwd = $pwd;
 		$this->nombre = $nombre;

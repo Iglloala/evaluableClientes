@@ -18,6 +18,15 @@ class Controlador{
 	}
 	
 	// Métodos
+
+	// Método para obtener de manera 'limpia' (escapando carácteres chungos) los datos pasados por post
+	public function obtenerPost($nombreCampo){
+		if (isset($_POST[$nombreCampo])){
+			$salida = $this->database->conexion->real_escape_string($_POST[$nombreCampo]);
+			return $salida;
+		}
+	}
+
 	public function run(){
 		// BLOQUE DE EJECUCIÓN PPAL
 		
@@ -32,7 +41,6 @@ class Controlador{
 
 		// Carga la cabecera
 		$this->vista->cargarHeader($this->menuItems, $numPagina);
-		$this->colaMensajes = [];
 
 		// Debug:
 		// $masMensajes = [["texto"=>'Te voy a cagar en el pecho', "tipo"=>'success'],
@@ -59,11 +67,12 @@ class Controlador{
 			default:
 				//$pagina = 'portada';
 		}
-		// Limpia la cola de mensajes una vez ya s ehan enviado a la vista
+		// Limpia la cola de mensajes una vez ya se han enviado a la vista
 		$this->colaMensajes = [];
 
 		// Carga  el footer
 		$this->vista->cargarFooter($pagina);
 	}
+
 }
 ?>

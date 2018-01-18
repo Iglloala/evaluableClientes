@@ -59,7 +59,7 @@ class Controlador{
 				require_once('controlador/alta.php');
 				break;
 			case 'baja':
-				//$pagina = 'baja';
+				require_once('controlador/baja.php');
 				break;
 			case 'modificar':
 				//$pagina = 'modificar';

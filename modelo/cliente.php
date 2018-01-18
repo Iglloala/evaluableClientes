@@ -56,7 +56,7 @@ class Cliente{
 	}
 
 	// obtenerCliente (Read)
-	public static function obtenerCliente(Database $database, string $dni){
+	public static function obtenerCliente(Database $database, $dni){
 		if ($dni!=""){
 			$sql = "SELECT * FROM clientes WHERE dniCliente='$dni'";
 			$resultado = $database->conexion->query($sql);
@@ -65,6 +65,9 @@ class Cliente{
 					$cliente = new Cliente($fila['dniCliente'], $fila['nombre'], $fila['direccion'], $fila['email'], $fila['pwd']);
 				}
 				return $cliente;
+			}
+			else {
+				return false;
 			}
 		}
 	}

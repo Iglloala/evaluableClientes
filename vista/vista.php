@@ -20,7 +20,7 @@ class Vista{
 	}
 	
 	// Defino un método que mostrará el footer modificando el template footer.tpl y añadiéndole el breadcrumb generado según la página que se vaya a visualizar en ese momento
-	public function cargarFooter(string $pagina){
+	public function cargarFooter($pagina){
 		$template = file_get_contents('vista/footer.tpl');
 		// Construyo el breadcrumb
 		$nombrePagina = ucfirst($pagina);
@@ -102,7 +102,7 @@ class Vista{
 	}
 
 	// Defino una función a la que se le pasa tipoFormulario y dependiendo de si es para dar de alta o para actualizar devuelve un formulario apropiado. Si es para actualizar tiene que recibir por parámetro un array con las propiedades del cliente en cuestión.
-	public function generaFormularioCliente(string $tipoFormulario, $datosCliente=[]){
+	public function generaFormularioCliente($tipoFormulario, $datosCliente=[]){
 		// Preparo los campos
 		$dniCliente = $datosCliente['dniCliente'];
 		$nombre = $datosCliente['nombre'];
@@ -153,6 +153,50 @@ class Vista{
 		$html = str_replace("{CONTENT}", $template, $base);
 		// Ahora llamo a la función que genera el formulario e inserto su respuesta html en lugar del token {FORMULARIO} del template
 		$formulario = $this->generaFormularioCliente("alta");
+		$html = str_replace("{FORMULARIO}", $formulario, $html);
+		// Y muestro el contenido ya completo
+		print $html;
+	}
+
+	// Defino una función para generar un formulario en el que introducir un DNI
+	public function generaFormularioSeleccionDNI(){
+		$html = "<form method='post' action=''>";
+		$html .= "  <div class='form-group'>";
+		$html .= "    <label for='dniCliente'>DNI</label>";
+		$html .= "    <input type='text' class='form-control' name='dniCliente' placeholder='DNI'>";
+		$html .= "    <button class='btn btn-primary btSubmit' type='submit' name='btSeleccionarCliente'>Buscar</button>";
+		$html .= "  </div>";
+		$html .= "</form>";
+		return $html;
+	}
+
+	// Defino una función para generar un formulario para confirmar la acción de borrado
+	public function generaFormularioConfirmacionBaja($dniCliente){
+		$html = "<form method='post' action=''>";
+		$html .= "  <div class='form-group'>";
+		$html .= "    <label for='btConfirmarBaja'>Se va a eliminar el cliente con dni <b>$dniCliente</b>. Estás seguro?</label>";
+		$html .= "</div>";
+		$html .= "<div class='form-group'>";
+		$html .= "    <button class='btn btn-primary btSubmit' type='submit' name='btConfirmarBaja'>Confirmar</button>";
+		$html .= "  </div>";
+		$html .= "</form>";
+		return $html;
+	}
+
+	// Defino una función para mostrar el contenido de la pantalla de baja. Si se le pasa el argumento tipo="seleccion" entonces carga un formulario para insertar un dni. Si llega tipo="confirmacion", entonces muestra un botón para confirmar la acción
+	public function mostrarContenidoBaja($colaMensajes, $tipo='seleccion', $dniCliente=''){
+		if ($tipo == "seleccion"){
+			// Genero el formulario para seleccionar un DNI
+			$formulario = $this->generaFormularioSeleccionDNI();
+		}
+		elseif ($tipo == "confirmacion"){
+			// Genero el formulario para seleccionar un DNI
+			$formulario = $this->generaFormularioConfirmacionBaja($dniCliente);
+		}
+		// Y cargo el template junto con el formulario apropiado
+		$base = $this->cargarMensajes($colaMensajes);
+		$template = file_get_contents('vista/baja.tpl');
+		$html = str_replace("{CONTENT}", $template, $base);
 		$html = str_replace("{FORMULARIO}", $formulario, $html);
 		// Y muestro el contenido ya completo
 		print $html;

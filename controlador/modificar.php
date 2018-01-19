@@ -1,6 +1,6 @@
 <?php
 	// Si  NO se ha enviado un dni para modificar entonces muestra el formulario para solicitar un DNI
-	if (!isset($_POST['btSeleccionarCliente'])){
+	if (!isset($_POST['btSeleccionarCliente']) && !isset($_POST['btRegistrarCliente'])){
 		array_push($this->colaMensajes, ['tipo'=>'info', 'texto'=>"Introduce el DNI del cliente que quieras modificar"]);
 		$this->vista->mostrarContenidoModificar($this->colaMensajes, "seleccion");
 	}
@@ -26,11 +26,8 @@
 			$this->vista->mostrarContenidoModificar($this->colaMensajes, "seleccion");
 		}
 	}
-	//////////////////////////////////////////////////////////////
-	// ESTO ES MIERDA
-	//////////////////////////////////////////////////////////////
 	// Si ya se han enviado ya los datos para actualizar pues convierto esos datos en una instancia de cliente y ejecuto el update
-	if (isset($_POST['btRegistrarCliente'])){
+	elseif (isset($_POST['btRegistrarCliente'])){
 		// preparo los datos
 		$dniCliente = $this->obtenerPost('dniCliente');
 		$nombre = $this->obtenerPost('nombre');

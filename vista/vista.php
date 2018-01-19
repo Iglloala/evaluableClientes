@@ -118,7 +118,7 @@ class Vista{
 			$html .= "    <input type='text' class='form-control' name='dniCliente' placeholder='DNI'>";
 		}
 		else {
-			$html .= "    <input type='text' class='form-control' name='dniCliente' placeholder='DNI' value='$dniCliente' disabled>";
+			$html .= "    <input type='text' class='form-control' name='dniCliente' placeholder='DNI' value='$dniCliente' readonly>";
 		}
 		$html .= "  </div>";
 		// - nombre
@@ -177,8 +177,9 @@ class Vista{
 		$html .= "    <label for='btConfirmarBaja'>Se va a eliminar el cliente con dni <b>$dniCliente</b>. Estás seguro?</label>";
 		$html .= "</div>";
 		$html .= "<div class='form-group'>";
-		$html .= "    <button class='btn btn-primary btSubmit' type='submit' name='btConfirmarBaja'>Confirmar</button>";
+		$html .= "    <button class='btn btn-primary btSubmit' type='submit' name='btConfirmarBaja' value='confirmarBaja'>Confirmar</button>";
 		$html .= "  </div>";
+		$html .= "<input type='hidden' name='dniCliente' value='$dniCliente'>";
 		$html .= "</form>";
 		return $html;
 	}

@@ -141,7 +141,8 @@ class Vista{
 		$html .= "    <label for='pwd'>Password</label>";
 		$html .= "    <input type='password' class='form-control' name='pwd' placeholder='Password' value='$pwd'>";
 		// - submit
-		$html .= "      <button id='btRegistrarCliente' class='btn btn-primary btSubmit' type='submit' name='btRegistrarCliente' value='btRegistrarCliente'>Registrar cliente</button>";
+		$textoSubmit = ($tipoFormulario == 'alta') ? "Registrar cliente" : "Modificar cliente";
+		$html .= "      <button id='btRegistrarCliente' class='btn btn-primary btSubmit' type='submit' name='btRegistrarCliente' value='btRegistrarCliente'>$textoSubmit</button>";
 		// eof: form
 		$html .= "</form>";
 		return $html;
@@ -220,6 +221,65 @@ class Vista{
 		$html = str_replace("{FORMULARIO}", $formulario, $html);
 		// Y muestro el contenido ya completo
 		print $html;
+	}
+
+	// Defino una función para mostrar el contenido de la pantalla de consulta. Si se le pasa el argumento 'tipo'=>'seleccion'  (o no se le pasa) entonces cargará un formulario para seleccionar un usuario mediante su dni. Y si el tipo es 'consulta' pues ya muestra los datos de un usuario en concreto.
+	public function mostrarContenidoConsulta($colaMensajes, $tipo='seleccion', $datosCliente=[]){
+		if ($tipo == 'seleccion'){
+			// Genera el formulario para seleccionar un DNI
+			$contenido = $this->generaFormularioSeleccionDNI();
+		}
+		elseif ($tipo='consulta'){
+			// Entonces ya ues genero el html para mostrar los datos de un cliente en concreto
+			$contenido = $this->generaSalidaDatosCliente($datosCliente);
+		}
+		// Y cargo el template junto con el formulario apropiado
+		$base = $this->cargarMensajes($colaMensajes);
+		$template = file_get_contents('vista/consulta.tpl');
+		$html = str_replace("{CONTENT}", $template, $base);
+		$html = str_replace("{CONTENIDO}", $contenido, $html);
+		// Y muestro el contenido ya completo
+		print $html;
+	}
+
+	// Defino una función a la que se le pasa un array con los datos de un cliente y genera el html necesario para mostrarlos
+	public function generaSalidaDatosCliente($datosCliente){
+		// Preparo los campos
+		$dniCliente = $datosCliente['dniCliente'];
+		$nombre = $datosCliente['nombre'];
+		$direccion = $datosCliente['direccion'];
+		$email = $datosCliente['email'];
+		$pwd = $datosCliente['pwd'];
+		// Empiezo a formatear la salida
+		$html = "<table class='table'>";
+		// - dni
+		$html .= "  <tr>";
+		$html .= "    <th scope='row'>DNI:</th>";
+		$html .= "    <td>$dniCliente</td>";
+		$html .= "  </tr>";
+		// - nombre
+		$html .= "  <tr>";
+		$html .= "    <th scope='row'>Nombre:</th>";
+		$html .= "    <td>$nombre</td>";
+		$html .= "  </tr>";
+		// - direccion
+		$html .= "  <tr>";
+		$html .= "    <th scope='row'>Dirección:</th>";
+		$html .= "    <td>$direccion</td>";
+		$html .= "  </tr>";
+		// - email
+		$html .= "  <tr>";
+		$html .= "    <th scope='row'>Correo electrónico:</th>";
+		$html .= "    <td>$email</td>";
+		$html .= "  </tr>";
+		// - pwd
+		$html .= "  <tr>";
+		$html .= "    <th scope='row'>Password:</th>";
+		$html .= "    <td>$pwd</td>";
+		$html .= "  </tr>";
+		$html .= "</table>";
+		// Y nada, pa' fuera
+		return $html;
 	}
 }
 

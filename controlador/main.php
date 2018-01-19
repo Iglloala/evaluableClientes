@@ -64,8 +64,11 @@ class Controlador{
 			case 'modificar':
 				require_once('controlador/modificar.php');
 				break;
+			case 'consulta':
+				require_once('controlador/consulta.php');
+				break;
 			default:
-				//$pagina = 'portada';
+				require_once('controlador/portada.php');
 		}
 		// Limpia la cola de mensajes una vez ya se han enviado a la vista
 		$this->colaMensajes = [];
